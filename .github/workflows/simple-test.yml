@@ -1,0 +1,31 @@
+name: 测试
+
+on:
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - test
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: 环境设置
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: 命令
+        run: |
+          cd ai-review-sdk/src/main/java
+          javac com/ai/review/AiReview.java
+          java com.ai.review.AiReview
