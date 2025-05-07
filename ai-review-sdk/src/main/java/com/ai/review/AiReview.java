@@ -32,13 +32,17 @@ public class AiReview {
             System.exit(1);
         }
 
+        String token = System.getenv("TOKEN");
+
+        String prompt = "请根据一下git diff 信息形成一份代码评审报告\n" + diff;
+
         OpenAIClient client = OpenAIOkHttpClient.builder()
-                .apiKey(System.getenv("TOKEN"))
+                .apiKey(token)
                 .baseUrl("https://dashscope.aliyuncs.com/compatible-mode/v1")
                 .build();
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-                .addUserMessage("你是谁")
-                .model("qwen-max")
+                .addUserMessage(prompt)
+                .model("qwen-plus")
                 .build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         System.out.println(chatCompletion.choices().get(0).message().content().orElse("无返回内容"));
