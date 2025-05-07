@@ -26,4 +26,4 @@ jobs:
       - name: 运行自己的jar
         run: java -jar ./libs/ai-review-sdk-1.0.jar
         env:
-          TOKEN: ${{token}}
+          TOKEN: ${{secrets.token}}
