@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class AiReview {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println(System.getenv("TOKEN"));
+        System.out.println("token:" + System.getenv("TOKEN"));
         // 获取最近两次提交的 diff
         ProcessBuilder builder = new ProcessBuilder("git", "diff", "HEAD~1", "HEAD");
         builder.directory(new File("."));
