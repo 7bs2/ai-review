@@ -13,7 +13,6 @@ public class AiReview {
         builder.directory(new File("."));
         builder.redirectErrorStream(true);
         Process process = builder.start();
-
         StringBuilder diff = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
@@ -27,7 +26,6 @@ public class AiReview {
             System.err.println("git diff 命令失败");
             System.exit(1);
         }
-
         // 调用 AI 接口（这里只打印 diff，可换成调用 OpenAI）
         System.out.println("最近两次提交的 diff:");
         System.out.println(diff);
