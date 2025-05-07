@@ -1,5 +1,10 @@
 package com.ai.review;
 
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatCompletion;
+import com.openai.models.ChatCompletionCreateParams;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +13,6 @@ import java.io.InputStreamReader;
 public class AiReview {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("token:" + System.getenv("TOKEN"));
         // 获取最近两次提交的 diff
         ProcessBuilder builder = new ProcessBuilder("git", "diff", "HEAD~1", "HEAD");
         builder.directory(new File("."));
@@ -27,9 +31,18 @@ public class AiReview {
             System.err.println("git diff 命令失败");
             System.exit(1);
         }
-        // 调用 AI 接口（这里只打印 diff，可换成调用 OpenAI）
-        System.out.println("最近两次提交的 diff:");
-        System.out.println(diff);
+
+        OpenAIClient client = OpenAIOkHttpClient.builder()
+                .apiKey(System.getenv("TOKEN"))
+                .baseUrl("https://dashscope.aliyuncs.com/compatible-mode/v1")
+                .build();
+        ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
+                .addUserMessage("你是谁")
+                .model("qwen-max")
+                .build();
+        ChatCompletion chatCompletion = client.chat().completions().create(params);
+        System.out.println(chatCompletion.choices().get(0).message().content().orElse("无返回内容"));
+
     }
 
 }
