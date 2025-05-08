@@ -23,7 +23,7 @@ jobs:
         run: mvn clean install
       - name: 将本地的jar包拷贝到目标文件夹
         run: mvn dependency:copy -Dartifact=com.ai.review:ai-review-sdk:1.0 -DoutputDirectory=./libs
-      - name: 运行自己的jar
+      - name: 输出大模型评审
         run: java -jar ./libs/ai-review-sdk-1.0.jar
         env:
           TOKEN: ${{secrets.API_KEY}}
